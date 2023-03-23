@@ -25,11 +25,12 @@ def registerUser(request):
             user = User.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
             user.role = user.CUSTOMER
             user.save()
-            messages.success(request, f'account is created for {username} successfully.')
+            messages.success(request, f'account with username {username} is created successfully.')
 
-            return redirect('home')
+            return redirect('registerUser')
         else:
-            print(form.errors)
+            messages.error(request, 'invalid credintials')
+            return redirect('registerUser')
             
     else:    
         form = UserForm()
