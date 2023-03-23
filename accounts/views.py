@@ -28,7 +28,11 @@ def registerUser(request):
             messages.success(request, f'account is created for {username} successfully.')
 
             return redirect('home')
-    form = UserForm()
+        else:
+            print(form.errors)
+            
+    else:    
+        form = UserForm()
     conntext = {
         'form': form,
     }
