@@ -31,7 +31,7 @@ class Vendor(models.Model):
                 }
 
                 if self.is_approved == True:
-                    # send notifcation email
+                    # send notifcation email    
                     mail_subject = "Congratulations! your accounrt has been activated."
                     send_notification(mail_subject, mail_template, context)
                 else:
