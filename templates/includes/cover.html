@@ -1,6 +1,6 @@
 {% load static %}
 
-    <div class="page-section restaurant-detail-image-section" style=" background: url({{ vendor.user_profile.profile_picture.url }}) no-repeat scroll 0 0 / cover;">
+    <div class="page-section restaurant-detail-image-section" style=" background: url({{ vendor.user_profile.cover_photo.url }}) no-repeat scroll 0 0 / cover;">
         <!-- Container Start -->
         <div class="container">
             <!-- Row Start -->
@@ -11,7 +11,7 @@
                         <div class="company-info">
                             <div class="img-holder">
                                 <figure>
-                                    <img src="{{ vendor.user_profile.cover_photo.url}}" alt="">
+                                    <img src="{{ vendor.user_profile.profile_picture.url}}" alt="">
                                 </figure>
                             </div>
 
