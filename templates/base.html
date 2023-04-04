@@ -18,9 +18,9 @@
 	<link href="{% static 'css/cs-foodbakery-plugin.css' %}" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet">
-	
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+
 	<!-- JAVASCRIPT -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="{% static 'js/modernizr.js' %}"></script>
@@ -28,39 +28,46 @@
 
 	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
-	
+
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="{% static 'js/custom.js' %}"></script>
-	
+
 	<!-- Include the PayPal JavaScript SDK -->
-    
+
 
 	<!-- Include Datatables plugin script and css -->
 	<link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 	<script>
-		$(document).ready( function () {
+		$(document).ready(function () {
 			$('#myOrdersTable').DataTable();
-		} );
+		});
 	</script>
-
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete"
+		async defer></script>
+	<script src="{% static 'js/custom.js' %}"></script>		
 	<style>
-		body, .main-section p, .mce-content-body p{
-			font:Normal  14px/24px "Open Sans", sans-serif;letter-spacing: 0px;text-transform: none;color: #515151 !important;
+		body,
+		.main-section p,
+		.mce-content-body p {
+			font: Normal 14px/24px "Open Sans", sans-serif;
+			letter-spacing: 0px;
+			text-transform: none;
+			color: #515151 !important;
 		}
 	</style>
 </head>
 
 <body>
 
-    <!-- LOAD NAVBAR HERE -->
-    {% include 'includes/navbar.html' %}
+	<!-- LOAD NAVBAR HERE -->
+	{% include 'includes/navbar.html' %}
 
-    <!-- LOAD CONTENT HERE -->
-    {% block content %}
-        <!-- CONTENT GOES HERE -->
-    {% endblock %}
+	<!-- LOAD CONTENT HERE -->
+	{% block content %}
+	<!-- CONTENT GOES HERE -->
+	{% endblock %}
 
-    <!-- LOAD FOOTER HERE -->
-    {% include 'includes/footer.html' %}
-
+	<!-- LOAD FOOTER HERE -->
+	{% include 'includes/footer.html' %}

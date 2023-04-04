@@ -5,3 +5,9 @@ urlpatterns = [
     path('', AccountViews.vendorDashboard, name='vendor'),
     path('profile/', views.vprofile, name='vprofile'),
 ]
+
+
+# AIzaSyDJFH5sYAeK9gEP_D0uMrihHA0t3jVlV6k
+
+
+#
