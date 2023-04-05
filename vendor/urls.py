@@ -7,6 +7,9 @@ urlpatterns = [
     path('menu-builder/', views.menuBuilder, name='menu-builder'),
 
     path('menu-builder/category/<int:pk>/', views.fooditems_by_category, name='fooditems_by_category'),
+
+    # category crud
+    path('menu-builder/category/add/', views.add_category, name='add_category'),
 ]
 
 

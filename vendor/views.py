@@ -1,11 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import VendorForm, Vendor
 from accounts.forms import UserProfileForm, UserProfile
 from django.contrib import messages
 from accounts.views import check_role_vendor
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .utils import get_vendor
+from django.template.defaultfilters import slugify
 from menu.models import Category, FoodItem
+
+from menu.forms import CategoryForm
 # Create your views here.
 
 @login_required(login_url='loginUser')
@@ -63,3 +66,24 @@ def fooditems_by_category(request, pk=None):
 
 
 
+def add_category(request):
+    vendor = get_vendor(request)
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            category_name = form.cleaned_data['category_name']
+            category = form.save(commit=False)
+            category.vendor = vendor
+            category.slug = slugify(category_name)
+            category.save()
+            messages.success(request, "category added successfully")
+            return redirect('menu-builder')
+        else:
+            print(form.errors)    
+            return redirect('add_category') 
+    else:
+        form = CategoryForm()
+    context = {
+        'form': form,
+    }        
+    return render(request, 'vendor/add_category.html', context)
