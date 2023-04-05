@@ -5,6 +5,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.conf import settings
+
 def detectUser(user):
     if user.role == 1:
         redirecturl = 'vendorDashboard'
