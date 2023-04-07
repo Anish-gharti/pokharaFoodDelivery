@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .utils import get_vendor
 from django.template.defaultfilters import slugify
 from menu.models import Category, FoodItem
+from menu.forms import FoodItemForm
 
 from menu.forms import CategoryForm
 # Create your views here.
@@ -121,3 +122,26 @@ def delete_category(request,pk=None):
     category.delete()
     messages.success(request, f'category {category.category_name} deleted successfully.')
     return redirect('menu-builder')
+
+
+def add_food(request):
+    if request.method == "POST":
+        form = FoodItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            foodtitle = form.cleaned_data['food_item']
+            fooditem_form = form.save(commit=False)
+            fooditem_form.vendor =get_vendor(request)
+            fooditem_form.slug = slugify(foodtitle)
+
+            fooditem_form.save()
+            messages.success(request, 'foodItem added successfully.')
+            return redirect('fooditems_by_category' , fooditem_form.category.id)
+        else:
+            print(form.errors)
+
+    else:
+        form = FoodItemForm()
+    context = {
+        'form':form,
+    }            
+    return render(request, 'vendor/add_food.html', context)
