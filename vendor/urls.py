@@ -15,6 +15,9 @@ urlpatterns = [
 
     # fooditem crud
     path('menu-builder/food/add/', views.add_food, name='add-food'),
+    path('menu-builder/food/edit/<int:pk>/', views.edit_food, name='edit-food'),
+    path('menu-builder/food/delete/<int:pk>/', views.delete_food, name='delete-food'),
+
 ]
 
 
