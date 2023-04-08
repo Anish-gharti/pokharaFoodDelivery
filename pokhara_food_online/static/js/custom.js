@@ -27,14 +27,14 @@ function onPlaceChanged() {
     // console.log(place);
     var geocoder = new google.maps.Geocoder()
     var address = document.getElementById('id_address').value
-    
-    geocoder.geocode({'address': address}, function(results, status){
+
+    geocoder.geocode({ 'address': address }, function (results, status) {
         // console.log('results=>', results)
         // console.log('status=>', status)
-        if (status == google.maps.GeocoderStatus.OK){
+        if (status == google.maps.GeocoderStatus.OK) {
             var latitude = results[0].geometry.location.lat();
             var longitude = results[0].geometry.location.lng();
-            
+
 
             $('#id_latitude').val(latitude);
             $('#id_longitude').val(longitude);
@@ -46,24 +46,24 @@ function onPlaceChanged() {
     });
     // loop through the addreess components and assign  other address data
     console.log(place.address_components);
-    for(var i=0; i< place.address_components.length; i++){
-        for(var j=0; j<place.address_components[i].types.length; j++){
+    for (var i = 0; i < place.address_components.length; i++) {
+        for (var j = 0; j < place.address_components[i].types.length; j++) {
             // get country
-            if(place.address_components[i].types[j] == 'country'){
+            if (place.address_components[i].types[j] == 'country') {
                 $('#id_country').val(place.address_components[i].long_name);
             }
             // get state
-            if(place.address_components[i].types[j] == 'administrative_area_level_1'){
+            if (place.address_components[i].types[j] == 'administrative_area_level_1') {
                 $('#id_state').val(place.address_components[i].long_name);
             }
             // get city
-            if(place.address_components[i].types[j] == "locality"){
+            if (place.address_components[i].types[j] == "locality") {
                 $('#id_city').val(place.address_components[i].long_name);
             }
             // get postal code
-            if(place.address_components[i].types[j] == 'postal_code'){
+            if (place.address_components[i].types[j] == 'postal_code') {
                 $('#id_pin_code').val(place.address_components[i].long_name);
-            } else{
+            } else {
                 $('#id_pin_code').val("");
             }
         }
@@ -71,53 +71,70 @@ function onPlaceChanged() {
 }
 
 
-$(document).ready(function(){
-    $('.add_to_cart').on('click', function(e){
+$(document).ready(function () {
+    $('.add_to_cart').on('click', function (e) {
         e.preventDefault();
         food_id = $(this).attr('data-id');
         url = $(this).attr('data-url');
-        
-      
+
+
         $.ajax({
             type: 'get',
             url: url,
-            success: function(response){
-                if(response.status == 'failed'){
-                    console.log(response)
-                }else {
+            success: function (response) {
+                if (response.status == 'login_required') {
+                    swal({
+                        title: response.message,
+                    }).then(function(){
+
+                        window.location.href = '/loginUser'
+
+                    })
+                }
+                else if (response.status == 'failed') {
+                    swal(response.message, '', 'error')
+                }
+                else {
 
                     $('#cart_counter').html(response.cart_counter['cart_count'])
-                    $('#qty-'+ food_id).html(response.qty)
+                    $('#qty-' + food_id).html(response.qty)
                 }
             }
         })
     })
 
     // place the cart item quantity on load
-    $('.item_qty').each(function(){
+    $('.item_qty').each(function () {
         var the_id = $(this).attr('id');
         var qty = $(this).attr('data-qty')
-        $('#'+ the_id).html(qty)
+        $('#' + the_id).html(qty)
     })
 
 
 
     // decrease the cart 
-    $('.decrease_cart').on('click', function(e){
+    $('.decrease_cart').on('click', function (e) {
         e.preventDefault();
         food_id = $(this).attr('data-id');
         url = $(this).attr('data-url');
-        
+
         $.ajax({
             type: 'get',
             url: url,
-            success: function(response){
-
-                if(response.status == 'failed'){
-                    console.log(response)
-                }else {
+            success: function (response) {
+                if (response.status == 'login_required') {
+                    swal(response.message, '', 'info').then(function () {
+                        window.location = '/loginUser'
+                    })
+                }
+                if (response.status == 'failed') {
+                    swal({
+                        title: response.message,
+                        timer: 1000,
+                    })
+                } else {
                     $('#cart_counter').html(response.cart_counter['cart_count'])
-                    $('#qty-'+ food_id).html(response.qty)
+                    $('#qty-' + food_id).html(response.qty)
                 }
 
             }

@@ -32,6 +32,7 @@ def vendor_detail(request, vendor_slug):
             cart_items = Cart.objects.filter(user=request.user)
         except:
             cart_items = None    
+    cart_items = None        
     context = {
         'vendor': vendor,
         'categories': categories,
@@ -64,7 +65,7 @@ def add_to_cart(request, food_id=None):
     
 
     else:
-        return JsonResponse({'status': 'failed', 'message': 'Please login to continue'})     
+        return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})     
     
 
 def decrease_cart(request, food_id=None):
@@ -95,5 +96,5 @@ def decrease_cart(request, food_id=None):
     
 
     else:
-        return JsonResponse({'status': 'failed', 'message': 'Please login to continue'})     
+        return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})     
     
