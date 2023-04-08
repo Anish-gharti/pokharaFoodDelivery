@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponse
+from django.http import JsonResponse
 from vendor.models import Vendor
 from menu.models import Category, FoodItem
 from django.db.models import Prefetch
-
+from .models import Cart
 # Create your views here.
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved =True)
@@ -31,3 +32,30 @@ def vendor_detail(request, vendor_slug):
         'categories': categories,
     }
     return render(request, 'marketplace/vendor_detail.html', context)
+
+
+def add_to_cart(request, food_id=None):
+    if request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            # check if the fooditem exits:
+            try:
+                fooditem = FoodItem.objects.get(id=food_id)
+                # check if the food item is already added or not
+                try:
+                    check_cart = Cart.objects.get(user=request.user, fooditem=fooditem)
+                    # increase the cart quantity
+                    check_cart.quantity += 1
+                    check_cart.save()
+                    return JsonResponse({'status': 'success', 'message': 'increased the cart quantity'})
+                except:
+                    check_cart = Cart.objects.create(user=request.user, fooditem=fooditem, quantity=1)
+                    return JsonResponse({'status': 'success', 'message': 'food item added to cart successfully.'})
+            except:
+                return JsonResponse({'status': 'failed', 'message': 'this food doesnot exist'})
+        else:
+            return JsonResponse({'status': 'failed', 'message': 'invalid request'})
+    
+    
+
+    else:
+        return JsonResponse({'status': 'failed', 'message': 'Please login to continue'})     
