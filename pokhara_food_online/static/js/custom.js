@@ -77,17 +77,18 @@ $(document).ready(function(){
         food_id = $(this).attr('data-id');
         url = $(this).attr('data-url');
         
-        data = {
-            'food_id': food_id,
-        }
+      
         $.ajax({
             type: 'get',
             url: url,
-            data: data,
             success: function(response){
-                console.log(response.cart_counter['cart_count'])
-                $('#cart_counter').html(response.cart_counter['cart_count'])
-                $('#qty-'+ food_id).html(response.qty)
+                if(response.status == 'failed'){
+                    console.log(response)
+                }else {
+
+                    $('#cart_counter').html(response.cart_counter['cart_count'])
+                    $('#qty-'+ food_id).html(response.qty)
+                }
             }
         })
     })
@@ -97,5 +98,29 @@ $(document).ready(function(){
         var the_id = $(this).attr('id');
         var qty = $(this).attr('data-qty')
         $('#'+ the_id).html(qty)
+    })
+
+
+
+    // decrease the cart 
+    $('.decrease_cart').on('click', function(e){
+        e.preventDefault();
+        food_id = $(this).attr('data-id');
+        url = $(this).attr('data-url');
+        
+        $.ajax({
+            type: 'get',
+            url: url,
+            success: function(response){
+
+                if(response.status == 'failed'){
+                    console.log(response)
+                }else {
+                    $('#cart_counter').html(response.cart_counter['cart_count'])
+                    $('#qty-'+ food_id).html(response.qty)
+                }
+
+            }
+        })
     })
 })
