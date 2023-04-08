@@ -4,6 +4,7 @@ from vendor.models import Vendor
 from menu.models import Category, FoodItem
 from django.db.models import Prefetch
 from .models import Cart
+from .context_processors import get_cart_counter
 # Create your views here.
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved =True)
@@ -26,10 +27,15 @@ def vendor_detail(request, vendor_slug):
     )
 
       
-
+    if request.user.is_authenticated:
+        try:
+            cart_items = Cart.objects.filter(user=request.user)
+        except:
+            cart_items = None    
     context = {
         'vendor': vendor,
         'categories': categories,
+        'cart_items':cart_items,
     }
     return render(request, 'marketplace/vendor_detail.html', context)
 
@@ -46,10 +52,10 @@ def add_to_cart(request, food_id=None):
                     # increase the cart quantity
                     check_cart.quantity += 1
                     check_cart.save()
-                    return JsonResponse({'status': 'success', 'message': 'increased the cart quantity'})
+                    return JsonResponse({'status': 'success', 'message': 'increased the cart quantity', 'cart_counter':get_cart_counter(request), 'qty':check_cart.quantity,})
                 except:
                     check_cart = Cart.objects.create(user=request.user, fooditem=fooditem, quantity=1)
-                    return JsonResponse({'status': 'success', 'message': 'food item added to cart successfully.'})
+                    return JsonResponse({'status': 'success', 'message': 'food item added to cart successfully.', 'cart_counter':get_cart_counter(request),'qty':check_cart.quantity,})
             except:
                 return JsonResponse({'status': 'failed', 'message': 'this food doesnot exist'})
         else:
