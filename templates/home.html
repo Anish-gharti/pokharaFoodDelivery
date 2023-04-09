@@ -11,23 +11,23 @@
 		style="padding-top: 200px; padding-bottom: 150px; margin-bottom: 0px; background: url({% static 'images/pokhara_food_delivery.jpeg' %}) no-repeat center / cover;">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<div class="col-lg-12
+				 col-md-12 col-sm-12 col-xs-12 ">
 					<div class="element-title">
 						<h1
 							style="font-size: 40px; color: #505050; text-transform: uppercase; line-height: 50px; margin-bottom: 25px; text-align:center;">
 							We are in the business of food<br>our restaurants do</h1>
 						<p style="font-size: 18px; letter-spacing: 1px; color: #505050; text-align:center;">
-							Ridiculus sociosqu
-							cursus neque cursus curae ante scelerisque vehicula.</p>
+							</p>
 					</div>
 				</div>
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 					<div class="main-search fancy bg-holder">
-						<form action="" method="GET">
+						<form action="{% url 'search' %}" method="GET">
 							<div class="row">
 								<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
 									<div class="field-holder">
-										<input type="text" name="keyword" placeholder="Resturant name or food name">
+										<input type="text" name="rest_name" placeholder="Resturant name or food name">
 									</div>
 								</div>
 								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">

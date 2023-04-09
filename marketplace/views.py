@@ -129,3 +129,5 @@ def delete_cart(request, cart_id):
         return JsonResponse({'status': 'failed', 'message': 'please login to continue'})
   
         
+def search(request):
+    return HttpResponse("anish")        
