@@ -33,7 +33,7 @@
                                                     <div class="text-holder">
                                                         <h6>{{ item.fooditem }}</h6>
                                                         <span>{{ item.fooditem.description }}</span>
-                                                        <a href="" class="badge badge-warning">{{ item.fooditem.vendor }}</a>
+                                                        <a href="{% url 'vendor-detail' item.fooditem.vendor.vendor_slug %}" class="badge badge-warning">{{ item.fooditem.vendor }}</a>
                                                     </div>
                                                     <div class="price-holder">
                                                         <span class="price">${{ item.fooditem.price }}</span>
@@ -86,11 +86,11 @@
                                                 Subtotal
                                                 <span class="price float-right">
                                                     <span class="currency">$</span>
-                                                    <span id="subtotal">{{ subtotal }}</span>
+                                                    <span id="subtotal">{{ sub_total }}</span>
                                                 </span>
                                             </li>
 
-                                            {% for key, value in tax_dict.items %}
+                                             {% for key, value in tax_dict.items %}
                                                 {% for i, j in value.items %}
                                                     <li style="list-style-type: none;">
                                                         {{ key }} <small>({{ i }}%)</small>

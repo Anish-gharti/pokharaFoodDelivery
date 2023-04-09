@@ -17,3 +17,17 @@ def get_cart_counter(request):
             cart_count = 0                
 
     return  dict(cart_count=cart_count)
+
+
+def get_cart_amount(request):
+    tax = 0
+    sub_total = 0
+    grand_total =0
+    if request.user.is_authenticated:
+        cart_items = Cart.objects.filter(user=request.user)
+        if cart_items:
+            for cart_item in cart_items:
+                fooditem = FoodItem.objects.get(pk=cart_item.fooditem.id)
+                sub_total += (fooditem.price * cart_item.quantity)
+            grand_total  += sub_total + tax
+    return dict(sub_total=sub_total, grand_total=grand_total, tax=tax)            
