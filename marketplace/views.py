@@ -5,6 +5,8 @@ from menu.models import Category, FoodItem
 from django.db.models import Prefetch
 from .models import Cart
 from .context_processors import get_cart_counter
+from django.contrib.auth.decorators import login_required, user_passes_test
+from accounts.views import check_role_customer
 # Create your views here.
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved =True)
@@ -98,6 +100,32 @@ def decrease_cart(request, food_id=None):
     else:
         return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})     
     
-
+@login_required(login_url='loginUser')
+@user_passes_test(check_role_customer)
 def cart(request):
-    return render(request, 'marketplace/cart.html')    
+    cart_items = Cart.objects.filter(user=request.user)
+
+    context = {
+        'cart_items': cart_items,
+    }
+    return render(request, 'marketplace/cart.html', context)    
+
+
+def delete_cart(request, cart_id):
+    if request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+                # check if the cart item exists
+                cart_item = Cart.objects.get(user=request.user, id=cart_id) 
+                if cart_item:
+                    cart_item.delete()
+                    return JsonResponse({'status': 'success', 'message': 'cartitem is successfully deleted', 'cart_counter': get_cart_counter(request)})
+            except:
+                return JsonResponse({'status': 'failed', 'message': 'cart item doesnot exist'})    
+                
+        else:
+            return JsonResponse({'status': 'failed', 'message': 'invalid request'})
+    else:
+        return JsonResponse({'status': 'failed', 'message': 'please login to continue'})
+  
+        
