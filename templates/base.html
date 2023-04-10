@@ -20,24 +20,28 @@
 	<link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
 	<link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+	{% if '/' == reqiest.path or 'profile' in request.path %}
+	<script
+	src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete"
+	async defer></script>
+	{% endif %}
 	<!-- JAVASCRIPT -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="{% static 'js/modernizr.js' %}"></script>
 	<script src="{% static 'js/bootstrap.js' %}"></script>
 
-	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
-
-
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="{% static 'js/custom.js' %}"></script>
 
+
+	<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+	
 	<!-- Include the PayPal JavaScript SDK -->
-
-
+	
+	
 	<!-- Include Datatables plugin script and css -->
 	<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 	<script>
@@ -45,12 +49,8 @@
 			$('#myOrdersTable').DataTable();
 		});
 	</script>
-	{% if '/' == reqiest.path or 'profile' in request.path %}
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete"
-		async defer></script>
-		{% endif %}
-		<script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+	
+	<script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
 	<script src="{% static 'js/custom.js' %}"></script>		
 	<style>
 		body,

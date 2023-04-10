@@ -1,5 +1,5 @@
 let autocomplete;
-
+var a = 0;
 function initAutoComplete() {
     autocomplete = new google.maps.places.Autocomplete(
         document.getElementById('id_address'),
@@ -10,6 +10,16 @@ function initAutoComplete() {
         })
     // function to specify what should happen when the prediction is clicked
     autocomplete.addListener('place_changed', onPlaceChanged);
+}
+function show(){
+    a++;
+    if(a%2 == 0){
+        document.getElementById('drop-down').style.display = "None";
+
+    }else {
+        document.getElementById('drop-down').style.display = "block";
+
+    }
 }
 
 function onPlaceChanged() {
