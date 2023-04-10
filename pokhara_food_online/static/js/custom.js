@@ -219,7 +219,7 @@ $(document).ready(function () {
 
     }
 
-
+    // add opening hr
     $('.add_hour').on('click', function (e) {
         e.preventDefault();
         var day = document.getElementById('id_day').value
@@ -252,11 +252,10 @@ $(document).ready(function () {
                     if (response.status == 'success') {
 
                         if (response.is_closed == 'Closed') {
-                            html = '<tr><td><b>' + response.day + '</b></td><td>Closed</td><td><a href="#" class="remove_hour" data-url="">Remove</a></td></tr>'
+                            html = '<tr id="hour-'+response.id+'"><td><b>'+response.day+'</b></td><td>Closed</td><td><a href="#" class="remove_hour" data-url="/vendor/opening-hours/remove/'+response.id+'/">Remove</a></td></tr>';
                         }
                         else {
-
-                            html = '<tr><td><b>' + response.day + '</b></td><td>' + response.from_hour + '-' + response.to_hour + '</td><td><a href="#" class="remove_hour" data-url="">Remove</a></td></tr>'
+                            html = '<tr id="hour-'+response.id+'"><td><b>'+response.day+'</b></td><td>'+response.from_hour+' - '+response.to_hour+'</td><td><a href="#" class="remove_hour" data-url="/vendor/opening-hours/remove/'+response.id+'/">Remove</a></td></tr>';
                         }
                         $('.opening_hours').append(html)
                         document.getElementById('opening_hours').reset();
@@ -274,5 +273,21 @@ $(document).ready(function () {
 
 
     });
+    // remove opening hour
 
+
+    $(document).on('click', '.remove_hour', function(e){
+        e.preventDefault();
+        url = $(this).attr('data-url');
+        
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response){
+                if(response.status == 'success'){
+                    document.getElementById('hour-'+response.id).remove()
+                }
+            }
+        })
+    })
 });

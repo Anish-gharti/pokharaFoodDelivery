@@ -197,7 +197,7 @@ def opening_hours(request):
     }
     return render(request, 'vendor/opening_hours.html', context)
 
-def add_opening_hour(request):
+def add_opening_hours(request):
     if request.user.is_authenticated:
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
             day = request.POST.get('day')
@@ -216,8 +216,16 @@ def add_opening_hour(request):
                 return JsonResponse(response)
 
             except IntegrityError as e:
-                response = {'status': 'failed'}
+                response = {'status': 'failed', 'message': from_hour+ '-'+to_hour+' already exists in the database',}
                 return JsonResponse(response)
 
         else:   
             return JsonResponse("invalid")        
+        
+
+def remove_opening_hours(request, pk=None):
+    if request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "GET":
+            hour = get_object_or_404(OpeningHour, pk=pk)
+            hour.delete()
+            return JsonResponse({'status': 'success', 'id':pk})

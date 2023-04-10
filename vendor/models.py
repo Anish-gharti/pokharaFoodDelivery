@@ -41,13 +41,14 @@ class Vendor(models.Model):
     
 
 DAYS = [
-    (1, ("SUNDAY")),
-       (2, ("MONDAY")),
-          (3, ("TUESDAY")),
-             (4, ("WEDNESDAY")),
-                (5, ("THRUSDAY")),
-                   (6, ("FRIDAY")),
-                      (7, ("SATURDAY")),
+   
+       (1, ("MONDAY")),
+          (2, ("TUESDAY")),
+             (3, ("WEDNESDAY")),
+                (4, ("THRUSDAY")),
+                   (5, ("FRIDAY")),
+                      (6, ("SATURDAY")),
+                       (7, ("SUNDAY")),
 ]
 
 HOURLY_TIME_FOR_ONEDAY = [(time(h,m).strftime('%I:%M %p'), time(h,m).strftime('%I:%M %p')) for h in range(0,24) for m in (0,30)]
@@ -61,7 +62,7 @@ class OpeningHour(models.Model):
 
     class Meta:
         ordering = ('day', 'from_hour')
-        unique_together = ('day', 'from_hour','to_hour')
+        unique_together = ('vendor', 'day', 'from_hour','to_hour')
 
     def __str__(self):
         return self.get_day_display()
