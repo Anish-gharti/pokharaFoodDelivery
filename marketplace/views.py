@@ -125,7 +125,7 @@ def delete_cart(request, cart_id):
                     cart_item.delete()
                     return JsonResponse({'status': 'success', 'message': 'cartitem is successfully deleted', 'cart_counter': get_cart_counter(request), 'cart_amount': get_cart_amount(request)})
             except:
-                return JsonResponse({'status': 'failed', 'message': 'cart item doesnot exist'})    
+                return JsonResponse({'status': 'failed', 'message': 'cart item doesnot exist'})
                 
         else:
             return JsonResponse({'status': 'failed', 'message': 'invalid request'})
