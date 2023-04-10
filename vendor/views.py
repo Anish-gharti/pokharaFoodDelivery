@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import VendorForm, Vendor
+from .forms import VendorForm, Vendor, OpeningHour, OpeningHourForm
 from accounts.forms import UserProfileForm, UserProfile
 from django.contrib import messages
 from accounts.views import check_role_vendor
@@ -185,3 +185,13 @@ def delete_food(request, pk=None):
     return redirect('fooditems_by_category', food.category.id)
 
 
+
+def opening_hours(request):
+    opening_hours = OpeningHour.objects.filter(vendor=get_vendor(request))
+    form = OpeningHourForm()
+
+    context = {
+        'opening_hours': opening_hours,
+        'form': form,
+    }
+    return render(request, 'vendor/opening_hours.html', context)
