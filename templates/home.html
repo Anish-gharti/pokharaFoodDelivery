@@ -94,11 +94,11 @@
 							<li class="has-border">
 								<figure>
 									{% if vendor.user_profile.profile_picture %}
-									<a href=""><img
+									<a href="{% url 'vendor-detail' vendor.vendor_slug %}"><img
 											src="{{ vendor.user_profile.profile_picture.url }}" height="125"
 											class="attachment-full size-full wp-post-image" alt=""></a>
 									{% else %}
-									<a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img
+									<a href="{% url 'vendor-detail' vendor.vendor_slug %}"><img
 											src="{% static 'images/default-profile.png' %}" height="125"
 											class="attachment-full size-full wp-post-image" alt=""></a>
 									{% endif %}
@@ -131,7 +131,7 @@
 								<div class="list-post featured">
 									<div class="img-holder">
 										<figure>
-											<a href="">
+											<a href="{% url 'vendor-detail' vendor.vendor_slug %}">
 												{% if vendor.user_profile.profile_picture %}
 												<img src="{{ vendor.user_profile.profile_picture.url }}"
 													class="img-thumb wp-post-image" alt="">
@@ -156,7 +156,7 @@
 
 										<div class="post-title">
 											<h5>
-												<a href="">{{ vendor }}</a>
+												<a href="{% url 'vendor-detail' vendor.vendor_slug %}">{{ vendor }}</a>
 											</h5>
 										</div>
 										{% if vendor.user_profile.city and vendor.user_profile.state and vendor.user_profile.pin_code %}
