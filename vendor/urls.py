@@ -20,6 +20,7 @@ urlpatterns = [
 
     # opening hours
     path('opening-hours/', views.opening_hours, name='opening-hours'),
+    path('opening-hours/add/', views.add_opening_hour, name='add_opening_hours'),
 
 ]
 
