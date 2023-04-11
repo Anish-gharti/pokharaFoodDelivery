@@ -5,8 +5,6 @@ from menu.models import FoodItem
 from vendor.models import Vendor
 
 
-request_object = ''
-
 class Payment(models.Model):
     PAYMENT_METHOD = (
         ('PayPal', 'PayPal'),
