@@ -112,10 +112,11 @@ $(document).ready(function () {
                     // subtotal, tax and grandtotal
                     applyCartAmount(
                         response.cart_amount['sub_total'],
-                        response.cart_amount['tax'],
+                        response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total'],
 
                     )
+                
                 }
             }
         })
@@ -155,7 +156,7 @@ $(document).ready(function () {
                     $('#qty-' + food_id).html(response.qty)
                     applyCartAmount(
                         response.cart_amount['sub_total'],
-                        response.cart_amount['tax'],
+                        response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total'],
 
                     )
@@ -191,7 +192,7 @@ $(document).ready(function () {
 
                     applyCartAmount(
                         response.cart_amount['sub_total'],
-                        response.cart_amount['tax'],
+                        response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total'],
 
                     )
@@ -219,12 +220,17 @@ $(document).ready(function () {
         }
     }
 
-    function applyCartAmount(subtotal, tax, grandtotal) {
+    function applyCartAmount(subtotal, tax_dict, grandtotal) {
         if (window.location.pathname == '/cart/') {
             $('#subtotal').html(subtotal)
-            $('#tax').html(tax)
             $('#total').html(grandtotal)
-
+            for(key1 in tax_dict){
+                console.log(tax_dict[key1])
+                for(value in tax_dict[key1]){
+                    // console.log(tax_dict[key1][value])
+                    $('#tax-'+key1).html(tax_dict[key1][value])
+                }
+            }
         }
 
     }
