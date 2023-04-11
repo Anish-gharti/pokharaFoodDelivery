@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includes/alerts.html' %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include 'customers/cover.html' %}
+    <!-- Container End -->
+</div>
+<div class="page-section account-header buyer-logged-in">
+    <div class="container">
+        <div class="row">
+            <!-- load side bar here -->
+            {% include 'includes/c_sidebar.html' %}
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <div class="user-dashboard loader-holder">
+                    <div class="user-holder">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row">
+                                <div class="element-title has-border right-filters-row">
+                                    <h5>Customer profile</h5>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Main Section End -->
+
+{% endblock %}
