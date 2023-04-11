@@ -12,6 +12,8 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.measure import D 
 from django.contrib.gis.db.models.functions import  Distance
 from datetime import date, datetime
+from orders.models import  Order
+from orders.forms import OrderForm
 # Create your views here.
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved =True)
@@ -170,4 +172,14 @@ def search(request):
             'vendor_count': v_count,
             'source_location': address,
         }
-        return render(request, 'marketplace/listings.html', context)        
+        return render(request, 'marketplace/listings.html', context)        \
+        
+
+
+
+def checkout(request):
+    form = OrderForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'marketplace/checkout.html', context)
