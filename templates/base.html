@@ -26,8 +26,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	{% if '/' == request.path or 'profile' in request.path or '/customers/profile/ in request.path' %}
 	<script
-	src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete"
-	 defer></script>
+		src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete"
+		defer></script>
 	{% endif %}
 	<!-- JAVASCRIPT -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -38,9 +38,14 @@
 
 
 	<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
-	
+
 	<!-- Include the PayPal JavaScript SDK -->
-	
+	<!-- <script src="https://www.paypal.com/sdk/js?client-id={{PAYPAL_CLIENT_ID}}&currency=USD"></script> -->
+	<!-- Load the client component. -->
+	<script src="https://www.paypal.com/sdk/js?client-id={{PAYPAL_CLIENT_ID}}&currency=USD"></script>
+	<!-- Load the PayPal Checkout component. -->
+	<script src="https://js.braintreegateway.com/web/3.92.1/js/paypal-checkout.min.js"></script
+
 	
 	<!-- Include Datatables plugin script and css -->
 	<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -49,9 +54,9 @@
 			$('#myOrdersTable').DataTable();
 		});
 	</script>
-	
+
 	<script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
-	<script src="{% static 'js/custom.js' %}"></script>		
+	<script src="{% static 'js/custom.js' %}"></script>
 	<style>
 		body,
 		.main-section p,
