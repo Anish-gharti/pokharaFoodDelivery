@@ -10,17 +10,17 @@ from accounts.utils import send_notification
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 import simplejson as json
-from . utils import generate_order_number
+from .utils import generate_order_number
 
 # Create your views here.
 def place_order(request):
     cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
-    print(cart_items)
+
     cart_count = cart_items.count()
     if cart_count <= 0:
         return redirect('marketplace')
     
-    subtotal = get_cart_amount(request)['sub_total']
+    # subtotal = get_cart_amount(request)['sub_total']
     total_tax = get_cart_amount(request)['tax']
     grand_total = get_cart_amount(request)['grand_total']
     tax_data = get_cart_amount(request)['tax_dict']
@@ -49,11 +49,13 @@ def place_order(request):
             context = {
                 'order': order,
                 'cart_items': cart_items,
+                'anish': 'anish'
             }
         
             return render(request, 'orders/place_order.html', context)
         else:
-            print(form.errors)      
+            print(form.errors)    
+              
     return render(request, 'orders/place_order.html')
 
 
@@ -75,11 +77,24 @@ def payments(request):
             status = status
         )
         payment.save()
-        print("saved")
+     
         # UPDATE THE ORDER MODEL
         order.payment = payment
         order.is_ordered = True
         order.save()
-        return HttpResponse("saved")
+        
+
+        # move the cart items to the ordered food model
+        cart_items = Cart.objects.filter(user=request.user)
+        for item in cart_items:
+            ordered_food = OrderedFood()
+            ordered_food.order = order
+            ordered_food.payment = payment
+            ordered_food.user = request.user
+            ordered_food.fooditem = item.fooditem
+            ordered_food.quantity = item.quantity
+            ordered_food.price = item.fooditem.price
+            ordered_food.amount = item.fooditem.price * item.quantity
+            ordered_food.save()
     else:
         print("adaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")

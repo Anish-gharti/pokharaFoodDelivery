@@ -106,4 +106,4 @@ class OrderedFood(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.fooditem.food_title
+        return self.fooditem.food_item
