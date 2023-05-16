@@ -145,7 +145,7 @@
     var url = "{% url 'payments' %}"
     var order_number = "{{ order.order_number }}"
     const csrftoken = getCookie('csrftoken');
-    var order_complete = ""
+    var order_complete = "{% url 'order-complete' %}"
 
     paypal.Buttons({
 
@@ -169,7 +169,9 @@
                 var status = orderData.status
                 var payment_method = 'PayPal'
                 sendTransaction(transaction_id, payment_method, status);
-
+                const element = document.getElementById('paypal-button-container');
+                element.innerHTML = '';
+                element.innerHTML = '<h4 class="text-center"><i class="fa fa-spinner fa-spin"></i> Please wait...</h4>';
 
             });
         }
@@ -196,4 +198,4 @@
     }
 </script>
 
-{% endblock %}
+{% endblock %} 

@@ -126,5 +126,37 @@ def payments(request):
 
         # delete cartitems
         cart_items.delete()
+        response = {
+            'order_number': order_number,
+            'transaction_id': transaction_id,
+        }
+        return JsonResponse(response)
     else:
-        print("aaaaaaaaaaaaaaa")
+        pass
+
+def order_complete(request):
+    order_number = request.GET.get('order_no')
+    transaction_id = request.GET.get('trans_id')
+
+    try:
+        order = Order.objects.get(order_number=order_number, payment__transaction_id=transaction_id, is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order)
+
+        subtotal = 0
+        for item in ordered_food:
+            subtotal += (item.price * item.quantity)
+
+        tax_data = json.loads(order.tax_data)
+        print(tax_data)
+
+        context = {
+            'ordered_food':ordered_food,
+            'order': order,
+             'subtotal': subtotal,
+            'tax_data': tax_data,
+        }
+        return render(request, 'orders/order_complete.html', context)    
+
+    except:
+        return redirect('home')
+    
