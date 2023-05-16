@@ -13,6 +13,7 @@ import simplejson as json
 from .utils import generate_order_number
 
 # Create your views here.
+@login_required(login_url='loginUser')
 def place_order(request):
     cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
 
@@ -58,7 +59,7 @@ def place_order(request):
               
     return render(request, 'orders/place_order.html')
 
-
+@login_required(login_url='loginUser')
 def payments(request):
          # Check if the request is ajax or not
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'POST':
@@ -96,5 +97,34 @@ def payments(request):
             ordered_food.price = item.fooditem.price
             ordered_food.amount = item.fooditem.price * item.quantity
             ordered_food.save()
+
+        # send email to the customer after the order is completed
+        mail_subject = 'Thank you for ordering food with us.'
+        mail_template = 'orders/order_confirmation_email.html'
+        context = {
+            'user': request.user,
+            'order': order,
+            'to_email': order.email,
+
+        }
+        send_notification(mail_subject, mail_template, context) 
+
+
+        # send email to the vendors
+        mail_subject = 'you have received a new order'
+        mail_template ='orders/new_order_received.html'
+        to_emails = []
+        for num_of_emails in cart_items:
+            if num_of_emails.fooditem.vendor.user.email not in to_emails:
+                to_emails.append(num_of_emails.fooditem.vendor.user.email)
+        print(to_emails)        
+        context = {
+            'order': order,
+            'to_email': to_emails,
+        }
+        send_notification(mail_subject, mail_template, context)
+
+        # delete cartitems
+        cart_items.delete()
     else:
-        print("adaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("aaaaaaaaaaaaaaa")
