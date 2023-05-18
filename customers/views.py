@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 from accounts.forms import UserInfoForm, UserProfileForm, UserProfile, User
+from orders.models import Order
 # Create your views here.
 
 def check_role_customer(user):
@@ -41,3 +42,14 @@ def customer_profile(request):
         'profile': user_profile,
     }
     return render(request, 'customers/customer_profile.html', context)
+
+
+
+
+
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('created_at')
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'customers/my_orders.html', context)
