@@ -3,7 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 from accounts.forms import UserInfoForm, UserProfileForm, UserProfile, User
-from orders.models import Order
+from orders.models import Order, OrderedFood
+import simplejson as json
 # Create your views here.
 
 def check_role_customer(user):
@@ -53,3 +54,21 @@ def my_orders(request):
         'orders': orders,
     }
     return render(request, 'customers/my_orders.html', context)
+
+
+def order_detail(request, order_number):
+    
+    order = Order.objects.get(order_number=order_number, is_ordered=True)
+    ordered_food = OrderedFood.objects.filter(order=order)
+    sub_total = 0
+    for item in ordered_food:
+        sub_total += (item.price * item.quantity)
+    tax_data = json.loads(order.tax_data)    
+    context = {
+            'order':order,
+            'ordered_food': ordered_food,
+            'sub_total':sub_total,
+            'tax_data':tax_data,
+        }
+    return render(request, 'customers/order_detail.html', context)
+  
