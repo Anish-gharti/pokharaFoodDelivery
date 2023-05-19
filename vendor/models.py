@@ -45,7 +45,7 @@ class Vendor(models.Model):
         if self.pk is not None:
             # update
             orig = Vendor.objects.get(pk=self.pk)
-            print(orig.is_approved)
+            
             if orig.is_approved != self.is_approved:
                 mail_template = 'accounts/emails/admin_approval_email.html'
                 context = {

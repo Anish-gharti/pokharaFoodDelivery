@@ -63,7 +63,8 @@ def order_detail(request, order_number):
     sub_total = 0
     for item in ordered_food:
         sub_total += (item.price * item.quantity)
-    tax_data = json.loads(order.tax_data)    
+    tax_data = json.loads(order.tax_data)  
+  
     context = {
             'order':order,
             'ordered_food': ordered_food,

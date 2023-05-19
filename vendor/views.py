@@ -11,6 +11,8 @@ from menu.forms import FoodItemForm
 from django.db import IntegrityError
 from django.http import JsonResponse
 from menu.forms import CategoryForm
+from orders.models import Order, OrderedFood
+import simplejson as json
 # Create your views here.
 
 @login_required(login_url='loginUser')
@@ -229,3 +231,25 @@ def remove_opening_hours(request, pk=None):
             hour = get_object_or_404(OpeningHour, pk=pk)
             hour.delete()
             return JsonResponse({'status': 'success', 'id':pk})
+
+
+
+
+
+def order_detail(request, order_number):
+    
+    order = Order.objects.get(order_number=order_number, is_ordered=True)
+    ordered_food = OrderedFood.objects.filter(order=order, fooditem__vendor=get_vendor(request))
+    sub_total = 0
+    for item in ordered_food:
+        sub_total += (item.price * item.quantity)
+    tax_data = json.loads(order.tax_data)    
+    vendor_name = get_vendor(request)
+    context = {
+            'order':order,
+            'ordered_food': ordered_food,
+            'sub_total':sub_total,
+            'tax_data':tax_data,
+            'vendor_name':vendor_name,
+        }
+    return render(request, 'vendor/order_detail.html', context)
