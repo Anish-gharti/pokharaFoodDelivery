@@ -35,7 +35,7 @@
                                             Total Revenue
                                         </div>
                                         <div class="card-body text-center">
-                                            <a href="#"><h5 class="card-title">anis</h5></a>
+                                            <a href="#"><h5 class="card-title">{{total_reveneue}}</h5></a>
                                         </div>
                                     </div>
                                 </div>
@@ -45,7 +45,7 @@
                                             This Month
                                         </div>
                                         <div class="card-body text-center">
-                                            <a href="#"><h5 class="card-title">anis</h5></a>
+                                            <a href="#"><h5 class="card-title">{{current_month_revenue}}</h5></a>
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
                                                           <tr>
                                                             <td>{{ order.order_number }}</td>
                                                             <td>{{ order.name }}</td>
-                                                            <td>${{ order.get_total_by_vendor }}</td>
+                                                            <td>${{ order.get_total_by_vendor.subtotal }}</td>
                                                             <td>{{ order.status }}</td>
                                                             <td>{{ order.created_at }}</td>
                                                             <td><a href="{% url 'vendor-order-detail' order.order_number %}" class="btn btn-danger">Details</a></td>

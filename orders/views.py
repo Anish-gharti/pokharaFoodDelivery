@@ -26,7 +26,8 @@ def place_order(request):
     for no_of_vendor_ids in cart_items:
         if no_of_vendor_ids.fooditem.vendor.id not in vendor_ids:
             vendor_ids.append(no_of_vendor_ids.fooditem.vendor.id)
-
+    print(vendor_ids)
+    get_tax = Tax.objects.filter(is_active=True)
     sub_total = 0
     total_data = {}
     k= {}
@@ -40,22 +41,22 @@ def place_order(request):
         else:
             sub_total = (fooditem.price * i.quantity)
             k[v_id] = sub_total
-        print(k)
-    # calculate the tax data
-    get_tax = Tax.objects.filter(is_active=True)
-    tax_dict = {}
-    for i in get_tax:
-        tax_type = i.tax_type
-        tax_percentage = i.tax_percentage
-        tax_amount = round((tax_percentage * sub_total)/100, 2)
-        tax_dict.update({tax_type:{str(tax_percentage): str(tax_amount)}})
+    
+        
+        tax_dict = {}
+        for i in get_tax:
+            tax_type = i.tax_type
+            tax_percentage = i.tax_percentage
+            tax_amount = round((tax_percentage * sub_total)/100, 2)
+            tax_dict.update({tax_type:{str(tax_percentage): str(tax_amount)}})
 
-    # construct total data
+        # construct total data
         total_data.update({fooditem.vendor.id:{str(sub_total):str(tax_dict)}})  
-    print(total_data)
 
 
-    # subtotal = get_cart_amount(request)['sub_total']
+
+    
+    subtotal = get_cart_amount(request)['sub_total']
     total_tax = get_cart_amount(request)['tax']
     grand_total = get_cart_amount(request)['grand_total']
     tax_data = get_cart_amount(request)['tax_dict']
@@ -86,7 +87,7 @@ def place_order(request):
             context = {
                 'order': order,
                 'cart_items': cart_items,
-                'anish': 'anish'
+                
             }
         
             return render(request, 'orders/place_order.html', context)
@@ -183,7 +184,7 @@ def order_complete(request):
             subtotal += (item.price * item.quantity)
 
         tax_data = json.loads(order.tax_data)
-        print(tax_data)
+
 
         context = {
             'ordered_food':ordered_food,

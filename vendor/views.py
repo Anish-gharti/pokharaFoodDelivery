@@ -240,16 +240,12 @@ def order_detail(request, order_number):
     
     order = Order.objects.get(order_number=order_number, is_ordered=True)
     ordered_food = OrderedFood.objects.filter(order=order, fooditem__vendor=get_vendor(request))
-    sub_total = 0
-    for item in ordered_food:
-        sub_total += (item.price * item.quantity)
-    tax_data = json.loads(order.tax_data)    
-    vendor_name = get_vendor(request)
+  
     context = {
             'order':order,
             'ordered_food': ordered_food,
-            'sub_total':sub_total,
-            'tax_data':tax_data,
-            'vendor_name':vendor_name,
+            'sub_total':order.get_total_by_vendor()['subtotal'],
+            'tax_data':order.get_total_by_vendor()['tax_dict'],
+            
         }
     return render(request, 'vendor/order_detail.html', context)
