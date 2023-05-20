@@ -246,6 +246,17 @@ def order_detail(request, order_number):
             'ordered_food': ordered_food,
             'sub_total':order.get_total_by_vendor()['subtotal'],
             'tax_data':order.get_total_by_vendor()['tax_dict'],
+            'grand_total':order.get_total_by_vendor()['grand_total']
             
         }
     return render(request, 'vendor/order_detail.html', context)
+
+
+
+def my_orders(request):
+    vendor = Vendor.objects.get(user=request.user)
+    order = Order.objects.filter(is_ordered=True, vendors__in=[vendor.id])
+    context = {
+        'orders':order,
+    }
+    return render(request, 'vendor/my_orders.html', context)
